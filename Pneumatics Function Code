@@ -1,0 +1,31 @@
+void usercontrol(void) {
+  // User control code here, inside the loop
+  bool PistonOut = true;
+  bool lastButtonState = false;
+  while (1) {
+    // This is the main execution loop for the user control program.
+    // Each time through the loop your program should update motor + servo
+    // values based on feedback from the joysticks.
+    bool buttonState = Controller1.ButtonB.pressing();
+    if (buttonState && !lastButtonState) {
+      // Button has just been pressed
+      PistonOut = !PistonOut; // Toggle piston state
+      lastButtonState = buttonState;
+      wait(50, msec); // Debounce delay
+    } else if (!buttonState) {
+      // Button is not being pressed
+      lastButtonState = buttonState;
+    }
+
+    if (PistonOut) {
+     piston1.set(1);
+     piston2.set(1);
+    } else {
+    piston1.set(0);
+    piston2.set(0);
+    }
+    // ........................................................................
+    // ........................................................................
+    wait(20, msec); // Sleep the task for a short amount of time to prevent wasted resources.
+  }
+}
